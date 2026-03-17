@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Check-in</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
 
 <style>
 body {
@@ -15,7 +15,6 @@ body {
   justify-content:center;
   align-items:center;
   height:100vh;
-  color:#333;
 }
 
 .card {
@@ -29,7 +28,6 @@ body {
 
 h2 {
   margin-bottom:20px;
-  color:#444;
 }
 
 input {
@@ -38,41 +36,27 @@ input {
   margin:8px 0;
   border-radius:10px;
   border:1px solid #ddd;
-  font-size:14px;
-}
-
-input:focus {
-  outline:none;
-  border-color:#667eea;
 }
 
 button {
   width:100%;
   padding:12px;
-  margin-top:10px;
   border:none;
   border-radius:10px;
   background:linear-gradient(135deg,#667eea,#764ba2);
   color:white;
   font-weight:bold;
   cursor:pointer;
-  transition:0.3s;
-}
-
-button:hover {
-  opacity:0.9;
 }
 
 #msg {
   margin-top:10px;
-  font-size:14px;
 }
 
 .link {
-  margin-top:15px;
   display:block;
+  margin-top:15px;
   color:#667eea;
-  text-decoration:none;
 }
 </style>
 </head>
@@ -98,9 +82,10 @@ const API_URL = "https://script.google.com/macros/s/AKfycbw4BUv-XSxjgzfhPP2xZzhx
 function sendData(){
   let studentId = document.getElementById("studentId").value.trim();
   let name = document.getElementById("name").value.trim();
+  let msg = document.getElementById("msg");
 
   if(!studentId || !name){
-    msg.innerText = "❌ กรุณากรอกข้อมูลให้ครบ";
+    msg.innerText = "❌ กรุณากรอกให้ครบ";
     msg.style.color = "red";
     return;
   }

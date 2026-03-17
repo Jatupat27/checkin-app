@@ -49,7 +49,6 @@ td {
 tr:hover {
   background:#f1f1f1;
 }
-
 </style>
 </head>
 
@@ -73,19 +72,34 @@ tr:hover {
 const API_URL = "https://script.google.com/macros/s/AKfycbw4BUv-XSxjgzfhPP2xZzhxy57XPQLklybRzmvozX5dKEmflEneUvDC0IXajI3imEDEFA/exec";
 
 fetch(API_URL)
-.then(res => res.text())
+.then(res => res.text()) // 🔥 แก้มือถือ
 .then(text => {
   let data = JSON.parse(text);
+
   let table = document.getElementById("table");
 
-  for(let i=1; i<data.length; i++){
+  for(let i = 1; i < data.length; i++){
     let row = table.insertRow();
 
-    for(let j=0; j<data[i].length; j++){
-      let cell = row.insertCell();
-      cell.innerText = data[i][j];
-    }
+    let idCell = row.insertCell(0);
+    let nameCell = row.insertCell(1);
+    let timeCell = row.insertCell(2);
+
+    idCell.innerText = data[i][0] || "-";
+    nameCell.innerText = data[i][1] || "-";
+    timeCell.innerText = data[i][2] || "-";
   }
+
+  if(data.length <= 1){
+    let row = table.insertRow();
+    let cell = row.insertCell(0);
+    cell.colSpan = 3;
+    cell.innerText = "⚠️ ยังไม่มีข้อมูล";
+  }
+})
+.catch(err => {
+  console.log(err);
+  alert("โหลดข้อมูลไม่ได้ ❌");
 });
 </script>
 
