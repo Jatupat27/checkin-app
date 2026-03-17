@@ -37,24 +37,27 @@ th {
 </table>
 
 <script>
-fetch("https://script.google.com/macros/s/AKfycbwi1TNFzkm2DwTsAwOUIivv9mvqEDUO0ctxckgfmjw3uJWhuLYhVXn62VwLXvm_AgBH2A/exec")
-.then(res => res.json())
-.then(data => {
-  let table = document.getElementById("table");
-
-  for(let i = 1; i < data.length; i++){
-    let row = table.insertRow();
-
-    for(let j = 0; j < data[i].length; j++){
-      let cell = row.insertCell();
-      cell.innerText = data[i][j];
-    }
-  }
-})
-.catch(() => {
-  document.body.innerHTML += "<p>❌ โหลดข้อมูลไม่ได้</p>";
-});
-</script>
+    fetch("https://script.google.com/macros/s/AKfycbwi1TNFzkm2DwTsAwOUIivv9mvqEDUO0ctxckgfmjw3uJWhuLYhVXn62VwLXvm_AgBH2A/exec")
+    .then(res => res.text())   // 🔥 เปลี่ยนตรงนี้
+    .then(text => {
+      let data = JSON.parse(text);
+    
+      let table = document.getElementById("table");
+    
+      for(let i = 1; i < data.length; i++){
+        let row = table.insertRow();
+    
+        for(let j = 0; j < data[i].length; j++){
+          let cell = row.insertCell();
+          cell.innerText = data[i][j];
+        }
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      document.body.innerHTML += "<p>❌ โหลดข้อมูลไม่ได้</p>";
+    });
+    </script>
 
 </body>
 </html>
