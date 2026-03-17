@@ -52,11 +52,25 @@ function sendData(){
   let studentId = document.getElementById("studentId").value;
   let name = document.getElementById("name").value;
 
-  fetch("https://script.google.com/macros/s/AKfycbwi1TNFzkm2DwTsAwOUIivv9mvqEDUO0ctxckgfmjw3uJWhuLYhVXn62VwLXvm_AgBH2A/exec",{
-    method:"POST",
-    body:new URLSearchParams({studentId,name})
+  if(!studentId || !name){
+    document.getElementById("msg").innerText="❌ กรอกให้ครบ";
+    return;
+  }
+
+  fetch("https://script.google.com/macros/s/AKfycbwi1TNFzkm2DwTsAwOUIivv9mvqEDUO0ctxckgfmjw3uJWhuLYhVXn62VwLXvm_AgBH2A/exec", {
+    method: "POST",
+    body: new URLSearchParams({
+      studentId: studentId,
+      name: name
+    })
   })
-  .then(()=> document.getElementById("msg").innerText="✅ สำเร็จ");
+  .then(res => res.text())
+  .then(() => {
+    document.getElementById("msg").innerText="✅ เช็คชื่อสำเร็จ";
+  })
+  .catch(() => {
+    document.getElementById("msg").innerText="❌ Error";
+  });
 }
 </script>
 
