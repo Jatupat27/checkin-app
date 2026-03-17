@@ -2,61 +2,32 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>Check-in</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
-
+<title>เช็คชื่อ</title>
 <style>
 body {
-  margin:0;
-  font-family: 'Kanit', sans-serif;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
+  font-family: sans-serif;
+  background: #f5f7fb;
+  text-align: center;
 }
-
 .card {
-  background:white;
-  padding:30px;
-  border-radius:20px;
-  width:320px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.2);
-  text-align:center;
+  background: white;
+  padding: 20px;
+  margin: 50px auto;
+  width: 300px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
-
-h2 {
-  margin-bottom:20px;
-}
-
 input {
-  width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:10px;
-  border:1px solid #ddd;
+  width: 90%;
+  padding: 10px;
+  margin: 10px;
 }
-
 button {
-  width:100%;
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  background:linear-gradient(135deg,#667eea,#764ba2);
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-#msg {
-  margin-top:10px;
-}
-
-.link {
-  display:block;
-  margin-top:15px;
-  color:#667eea;
+  padding: 10px 20px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 8px;
 }
 </style>
 </head>
@@ -64,7 +35,7 @@ button {
 <body>
 
 <div class="card">
-  <h2>📌 เช็คชื่อ</h2>
+  <h2>เช็คชื่อ</h2>
 
   <input id="studentId" placeholder="รหัสนักศึกษา">
   <input id="name" placeholder="ชื่อ-นามสกุล">
@@ -73,19 +44,19 @@ button {
 
   <p id="msg"></p>
 
-  <a href="dashboard.html" class="link">📊 ดูรายชื่อ</a>
+  <a href="dashboard.html">📊 ดูรายชื่อ</a>
 </div>
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbxDDCxiSmywAi0kRNAGmN0vq2WWbLWzwHZO-VfchaGZeYbsGXeWIZc3SUJlbzdNsn1s-w/exec";
 
-function sendData(){
+function sendData() {
   let studentId = document.getElementById("studentId").value.trim();
   let name = document.getElementById("name").value.trim();
   let msg = document.getElementById("msg");
 
-  if(!studentId || !name){
-    msg.innerText = "❌ กรุณากรอกให้ครบ";
+  if (!studentId || !name) {
+    msg.innerText = "❌ กรอกข้อมูลให้ครบ";
     msg.style.color = "red";
     return;
   }
@@ -97,13 +68,13 @@ function sendData(){
       name: name
     })
   })
-  .then(res => res.text())
-  .then(() => {
+  .then(res => res.json())
+  .then(data => {
     msg.innerText = "✅ เช็คชื่อสำเร็จ";
     msg.style.color = "green";
   })
-  .catch(() => {
-    msg.innerText = "❌ เกิดข้อผิดพลาด";
+  .catch(err => {
+    msg.innerText = "❌ ส่งข้อมูลไม่สำเร็จ";
     msg.style.color = "red";
   });
 }
