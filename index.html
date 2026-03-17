@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
   <meta charset="UTF-8">
-  <title>QR Check-in System</title>
+  <title>Check-in System</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -22,26 +22,19 @@
       background: linear-gradient(135deg, #667eea, #764ba2);
     }
 
-    .container {
-      display: flex;
-      gap: 30px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
     .card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(15px);
-      padding: 30px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(12px);
+      padding: 40px;
       border-radius: 20px;
-      width: 320px;
+      width: 350px;
       text-align: center;
       color: white;
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
-    h2 {
-      margin-bottom: 15px;
+    h1 {
+      margin-bottom: 20px;
     }
 
     input {
@@ -49,7 +42,7 @@
       padding: 12px;
       border-radius: 10px;
       border: none;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       font-size: 16px;
     }
 
@@ -62,80 +55,54 @@
       color: #764ba2;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      transform: scale(1.05);
     }
 
     #msg {
-      margin-top: 10px;
-      font-size: 14px;
-    }
-
-    .success {
-      color: #00ffcc;
-    }
-
-    .error {
-      color: #ff6b6b;
-    }
-
-    img {
       margin-top: 15px;
-      border-radius: 10px;
     }
+
+    .success { color: #00ffcc; }
+    .error { color: #ff4d4d; }
   </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="card">
+  <h1>📌 เช็คชื่อ</h1>
 
-  <!-- เช็คชื่อ -->
-  <div class="card">
-    <h2>📌 Check-in</h2>
+  <input id="studentId" placeholder="รหัสนักศึกษา">
+  <input id="name" placeholder="ชื่อ - นามสกุล">
 
-    <input id="name" placeholder="กรอกชื่อของคุณ">
-    <button onclick="sendData()">เช็คชื่อ</button>
+  <button onclick="sendData()">เช็คชื่อ</button>
 
-    <p id="msg"></p>
-  </div>
-
-  <!-- QR Code -->
-  <div class="card">
-    <h2>📱 Scan QR</h2>
-    <p>สแกนเพื่อเข้าเว็บเช็คชื่อ</p>
-
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://script.google.com/macros/s/AKfycbwi1TNFzkm2DwTsAwOUIivv9mvqEDUO0ctxckgfmjw3uJWhuLYhVXn62VwLXvm_AgBH2A/exec">
-
-    <p style="font-size:12px; margin-top:10px;">
-      เปิดเว็บแล้วกรอกชื่อได้เลย
-    </p>
-  </div>
-
+  <p id="msg"></p>
 </div>
 
 <script>
 function sendData() {
+  const studentId = document.getElementById("studentId").value;
   const name = document.getElementById("name").value;
   const msg = document.getElementById("msg");
 
-  if (!name) {
-    msg.innerText = "❌ กรุณากรอกชื่อ";
+  if (!studentId || !name) {
+    msg.innerText = "❌ กรุณากรอกข้อมูลให้ครบ";
     msg.className = "error";
     return;
   }
 
   fetch("https://script.google.com/macros/s/AKfycbwi1TNFzkm2DwTsAwOUIivv9mvqEDUO0ctxckgfmjw3uJWhuLYhVXn62VwLXvm_AgBH2A/exec", {
     method: "POST",
-    body: new URLSearchParams({ name: name })
+    body: new URLSearchParams({
+      studentId: studentId,
+      name: name
+    })
   })
   .then(res => res.text())
   .then(() => {
     msg.innerText = "✅ เช็คชื่อสำเร็จ";
     msg.className = "success";
+    document.getElementById("studentId").value = "";
     document.getElementById("name").value = "";
   })
   .catch(() => {
