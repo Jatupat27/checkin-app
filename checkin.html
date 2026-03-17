@@ -2,80 +2,132 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>เช็คชื่อ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ระบบเช็คชื่อ</title>
+
 <style>
 body {
-  font-family: sans-serif;
-  background: #f5f7fb;
-  text-align: center;
+  margin: 0;
+  font-family: 'Prompt', sans-serif;
+  background: linear-gradient(120deg, #667eea, #764ba2);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+/* กล่อง */
 .card {
-  background: white;
-  padding: 20px;
-  margin: 50px auto;
-  width: 300px;
-  border-radius: 15px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-}
-input {
+  background: rgba(255,255,255,0.95);
+  padding: 35px;
+  border-radius: 25px;
   width: 90%;
-  padding: 10px;
-  margin: 10px;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+  backdrop-filter: blur(10px);
 }
-button {
-  padding: 10px 20px;
-  background: #4CAF50;
-  color: white;
+
+/* หัวข้อ */
+h1 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* input */
+input {
+  width: 100%;
+  padding: 15px;
+  margin: 12px 0;
+  border-radius: 12px;
   border: none;
-  border-radius: 8px;
+  background: #f1f3f6;
+  font-size: 16px;
+  outline: none;
+  transition: 0.2s;
+}
+
+input:focus {
+  background: #e0e7ff;
+  transform: scale(1.02);
+}
+
+/* ปุ่ม */
+button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(45deg, #ff6a00, #ee0979);
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* ลิงก์ */
+.link {
+  margin-top: 20px;
+  display: block;
+  color: #764ba2;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* ไอคอน */
+.icon {
+  font-size: 50px;
+  margin-bottom: 10px;
 }
 </style>
+
 </head>
 
 <body>
 
 <div class="card">
-  <h2>เช็คชื่อ</h2>
+  <div class="icon">🎓</div>
+  <h1>เช็คชื่อเข้าเรียน</h1>
 
-  <input id="studentId" placeholder="รหัสนักศึกษา">
-  <input id="name" placeholder="ชื่อ-นามสกุล">
+  <input type="text" id="studentId" placeholder="📌 รหัสนักศึกษา">
+  <input type="text" id="name" placeholder="👤 ชื่อ-นามสกุล">
 
-  <button onclick="sendData()">เช็คชื่อ</button>
+  <button onclick="submitData()">🚀 เช็คชื่อ</button>
 
-  <p id="msg"></p>
-
-  <a href="dashboard.html">📊 ดูรายชื่อ</a>
+  <a href="dashboard.html" class="link">📊 ดูรายชื่อทั้งหมด</a>
 </div>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbxDDCxiSmywAi0kRNAGmN0vq2WWbLWzwHZO-VfchaGZeYbsGXeWIZc3SUJlbzdNsn1s-w/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwRPwHcOpuaMzSFQWuNM_7aR-7reHXGqQLTqG08Mkuq4EiWmh71COPh73itmsmqNT8-AQ/exec";
 
-function sendData() {
-  let studentId = document.getElementById("studentId").value.trim();
-  let name = document.getElementById("name").value.trim();
-  let msg = document.getElementById("msg");
+function submitData() {
+  const id = document.getElementById("studentId").value;
+  const name = document.getElementById("name").value;
 
-  if (!studentId || !name) {
-    msg.innerText = "❌ กรอกข้อมูลให้ครบ";
-    msg.style.color = "red";
+  if (!id || !name) {
+    alert("⚠️ กรุณากรอกข้อมูลให้ครบ");
     return;
   }
 
   fetch(API_URL, {
     method: "POST",
     body: new URLSearchParams({
-      studentId: studentId,
+      studentId: id,
       name: name
     })
   })
   .then(res => res.json())
-  .then(data => {
-    msg.innerText = "✅ เช็คชื่อสำเร็จ";
-    msg.style.color = "green";
+  .then(() => {
+    alert("✅ เช็คชื่อสำเร็จ!");
   })
-  .catch(err => {
-    msg.innerText = "❌ ส่งข้อมูลไม่สำเร็จ";
-    msg.style.color = "red";
+  .catch(() => {
+    alert("❌ เกิดข้อผิดพลาด");
   });
 }
 </script>
