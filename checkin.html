@@ -4,51 +4,92 @@
 <meta charset="UTF-8">
 <title>Check-in</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
 body {
+  margin:0;
+  font-family: 'Kanit', sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
   display:flex;
   justify-content:center;
   align-items:center;
   height:100vh;
-  background:linear-gradient(135deg,#6a11cb,#2575fc);
-  color:white;
-  font-family:sans-serif;
+  color:#333;
 }
+
 .card {
-  background:rgba(255,255,255,0.1);
+  background:white;
   padding:30px;
   border-radius:20px;
-  width:300px;
+  width:320px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
   text-align:center;
 }
-input, button {
-  width:100%;
-  padding:10px;
-  margin:5px 0;
-  border-radius:10px;
-  border:none;
+
+h2 {
+  margin-bottom:20px;
+  color:#444;
 }
+
+input {
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:10px;
+  border:1px solid #ddd;
+  font-size:14px;
+}
+
+input:focus {
+  outline:none;
+  border-color:#667eea;
+}
+
 button {
-  background:white;
-  color:#2575fc;
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:white;
   font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover {
+  opacity:0.9;
+}
+
+#msg {
+  margin-top:10px;
+  font-size:14px;
+}
+
+.link {
+  margin-top:15px;
+  display:block;
+  color:#667eea;
+  text-decoration:none;
 }
 </style>
 </head>
 
 <body>
+
 <div class="card">
   <h2>📌 เช็คชื่อ</h2>
 
   <input id="studentId" placeholder="รหัสนักศึกษา">
-  <input id="name" placeholder="ชื่อ">
+  <input id="name" placeholder="ชื่อ-นามสกุล">
 
   <button onclick="sendData()">เช็คชื่อ</button>
 
   <p id="msg"></p>
 
-  <br>
-  <a href="dashboard.html" style="color:white;">📊 ดูรายชื่อ</a>
+  <a href="dashboard.html" class="link">📊 ดูรายชื่อ</a>
 </div>
 
 <script>
@@ -59,7 +100,8 @@ function sendData(){
   let name = document.getElementById("name").value.trim();
 
   if(!studentId || !name){
-    document.getElementById("msg").innerText = "❌ กรอกให้ครบ";
+    msg.innerText = "❌ กรุณากรอกข้อมูลให้ครบ";
+    msg.style.color = "red";
     return;
   }
 
@@ -72,10 +114,12 @@ function sendData(){
   })
   .then(res => res.text())
   .then(() => {
-    document.getElementById("msg").innerText = "✅ เช็คชื่อสำเร็จ";
+    msg.innerText = "✅ เช็คชื่อสำเร็จ";
+    msg.style.color = "green";
   })
   .catch(() => {
-    document.getElementById("msg").innerText = "❌ Error";
+    msg.innerText = "❌ เกิดข้อผิดพลาด";
+    msg.style.color = "red";
   });
 }
 </script>
