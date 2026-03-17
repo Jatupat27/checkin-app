@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+
+<style>
+body {
+  font-family:sans-serif;
+  padding:20px;
+}
+table {
+  width:100%;
+  border-collapse:collapse;
+}
+th, td {
+  border:1px solid #ccc;
+  padding:8px;
+}
+th {
+  background:#eee;
+}
+</style>
+</head>
+
+<body>
+
+<h2>📊 รายชื่อผู้เช็คชื่อ</h2>
+
+<table id="table"></table>
+
+<script>
+fetch("https://script.google.com/macros/s/AKfycbwi1TNFzkm2DwTsAwOUIivv9mvqEDUO0ctxckgfmjw3uJWhuLYhVXn62VwLXvm_AgBH2A/exec")
+.then(res=>res.json())
+.then(data=>{
+  let html="";
+  data.forEach(row=>{
+    html+="<tr>";
+    row.forEach(cell=>{
+      html+=`<td>${cell}</td>`;
+    });
+    html+="</tr>";
+  });
+  document.getElementById("table").innerHTML=html;
+});
+</script>
+
+</body>
+</html>

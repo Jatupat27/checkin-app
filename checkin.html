@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Check-in</title>
+
+<style>
+body {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  background:linear-gradient(135deg,#6a11cb,#2575fc);
+  color:white;
+  font-family:sans-serif;
+}
+.card {
+  background:rgba(255,255,255,0.1);
+  padding:30px;
+  border-radius:20px;
+  width:300px;
+  text-align:center;
+}
+input, button {
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+  border-radius:10px;
+  border:none;
+}
+button { background:white; color:#2575fc; }
+</style>
+</head>
+
+<body>
+<div class="card">
+  <h2>📌 เช็คชื่อ</h2>
+
+  <input id="studentId" placeholder="รหัสนักศึกษา">
+  <input id="name" placeholder="ชื่อ">
+
+  <button onclick="sendData()">เช็คชื่อ</button>
+
+  <p id="msg"></p>
+
+  <br>
+  <a href="dashboard.html" style="color:white;">📊 ดูรายชื่อ</a>
+</div>
+
+<script>
+function sendData(){
+  let studentId = document.getElementById("studentId").value;
+  let name = document.getElementById("name").value;
+
+  fetch("https://script.google.com/macros/s/AKfycbwi1TNFzkm2DwTsAwOUIivv9mvqEDUO0ctxckgfmjw3uJWhuLYhVXn62VwLXvm_AgBH2A/exec",{
+    method:"POST",
+    body:new URLSearchParams({studentId,name})
+  })
+  .then(()=> document.getElementById("msg").innerText="✅ สำเร็จ");
+}
+</script>
+
+</body>
+</html>
