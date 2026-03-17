@@ -2,36 +2,91 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Scan QR</title>
 
 <style>
 body {
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  background:linear-gradient(135deg,#667eea,#764ba2);
-  color:white;
-  font-family:sans-serif;
-  text-align:center;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Prompt', sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
 }
+
+/* กล่อง */
 .card {
-  background:rgba(255,255,255,0.1);
-  padding:30px;
-  border-radius:20px;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(15px);
+  padding: 40px;
+  border-radius: 25px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  animation: fadeIn 0.8s ease;
 }
-img { margin-top:15px; }
+
+/* animation */
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(20px);}
+  to {opacity:1; transform:translateY(0);}
+}
+
+/* หัวข้อ */
+h1 {
+  margin-bottom: 10px;
+  font-size: 26px;
+}
+
+/* คำอธิบาย */
+p {
+  opacity: 0.9;
+}
+
+/* QR */
+.qr {
+  margin: 25px 0;
+  padding: 15px;
+  background: white;
+  border-radius: 15px;
+  display: inline-block;
+}
+
+/* ปุ่ม */
+.btn {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 20px;
+  background: linear-gradient(45deg, #ff6a00, #ee0979);
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
 </style>
 </head>
 
 <body>
+
 <div class="card">
-  <h2>📱 สแกนเพื่อเช็คชื่อ</h2>
+  <h1>📱 สแกน QR เพื่อเช็คชื่อ</h1>
+  <p>ใช้มือถือสแกนเพื่อเข้าสู่ระบบเช็คชื่อ</p>
 
-  <!-- QR ไปหน้า checkin -->
-  <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://jatupat27.github.io/checkin-app/checkin.html">
+  <div class="qr">
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://jatupat27.github.io/checkin-app/checkin.html">
+  </div>
 
-  <p>สแกนแล้วจะไปหน้าเช็คชื่อ</p>
+  <p>หรือกดปุ่มด้านล่าง</p>
+
+  <a href="checkin.html" class="btn">🚀 ไปหน้าเช็คชื่อ</a>
 </div>
+
 </body>
 </html>

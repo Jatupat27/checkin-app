@@ -5,58 +5,100 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ระบบเช็คชื่อ</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
 body {
   margin: 0;
   font-family: 'Prompt', sans-serif;
-  background: linear-gradient(120deg, #667eea, #764ba2);
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  overflow: hidden;
 }
 
-/* กล่อง */
+/* พื้นหลัง animation */
+body::before {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 10%, transparent 10%);
+  background-size: 40px 40px;
+  animation: moveBg 20s linear infinite;
+}
+
+@keyframes moveBg {
+  from {transform: translate(0,0);}
+  to {transform: translate(-200px,-200px);}
+}
+
+/* card */
 .card {
+  position: relative;
   background: rgba(255,255,255,0.95);
-  padding: 35px;
+  padding: 40px;
   border-radius: 25px;
   width: 90%;
   max-width: 420px;
   text-align: center;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  animation: fadeIn 0.6s ease;
 }
 
-/* หัวข้อ */
+@keyframes fadeIn {
+  from {opacity:0; transform: translateY(30px);}
+  to {opacity:1; transform: translateY(0);}
+}
+
+/* icon */
+.icon {
+  font-size: 55px;
+  margin-bottom: 10px;
+}
+
+/* title */
 h1 {
   margin-bottom: 20px;
   color: #333;
 }
 
 /* input */
+.input-group {
+  position: relative;
+}
+
+.input-group span {
+  position: absolute;
+  left: 12px;
+  top: 14px;
+  font-size: 18px;
+}
+
 input {
   width: 100%;
-  padding: 15px;
-  margin: 12px 0;
+  padding: 15px 15px 15px 40px;
+  margin: 10px 0;
   border-radius: 12px;
   border: none;
   background: #f1f3f6;
   font-size: 16px;
-  outline: none;
-  transition: 0.2s;
+  transition: 0.25s;
 }
 
 input:focus {
   background: #e0e7ff;
-  transform: scale(1.02);
+  transform: scale(1.03);
+  box-shadow: 0 0 0 2px #667eea;
 }
 
-/* ปุ่ม */
+/* button */
 button {
   width: 100%;
   padding: 15px;
-  margin-top: 10px;
+  margin-top: 15px;
   border: none;
   border-radius: 12px;
   background: linear-gradient(45deg, #ff6a00, #ee0979);
@@ -67,24 +109,26 @@ button {
 }
 
 button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transform: scale(1.07);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
 }
 
-/* ลิงก์ */
+/* link */
 .link {
   margin-top: 20px;
-  display: block;
+  display: inline-block;
   color: #764ba2;
   text-decoration: none;
   font-weight: bold;
 }
 
-/* ไอคอน */
-.icon {
-  font-size: 50px;
-  margin-bottom: 10px;
+/* status */
+.status {
+  margin-top: 15px;
+  font-weight: bold;
 }
+.success { color: green; }
+.error { color: red; }
 </style>
 
 </head>
@@ -95,10 +139,19 @@ button:hover {
   <div class="icon">🎓</div>
   <h1>เช็คชื่อเข้าเรียน</h1>
 
-  <input type="text" id="studentId" placeholder="📌 รหัสนักศึกษา">
-  <input type="text" id="name" placeholder="👤 ชื่อ-นามสกุล">
+  <div class="input-group">
+    <span>📌</span>
+    <input type="text" id="studentId" placeholder="รหัสนักศึกษา">
+  </div>
+
+  <div class="input-group">
+    <span>👤</span>
+    <input type="text" id="name" placeholder="ชื่อ-นามสกุล">
+  </div>
 
   <button onclick="submitData()">🚀 เช็คชื่อ</button>
+
+  <div id="status" class="status"></div>
 
   <a href="dashboard.html" class="link">📊 ดูรายชื่อทั้งหมด</a>
 </div>
@@ -109,11 +162,16 @@ const API_URL = "https://script.google.com/macros/s/AKfycbwRPwHcOpuaMzSFQWuNM_7a
 function submitData() {
   const id = document.getElementById("studentId").value;
   const name = document.getElementById("name").value;
+  const status = document.getElementById("status");
 
   if (!id || !name) {
-    alert("⚠️ กรุณากรอกข้อมูลให้ครบ");
+    status.innerHTML = "⚠️ กรุณากรอกข้อมูลให้ครบ";
+    status.className = "status error";
     return;
   }
+
+  status.innerHTML = "⏳ กำลังส่งข้อมูล...";
+  status.className = "status";
 
   fetch(API_URL, {
     method: "POST",
@@ -124,10 +182,12 @@ function submitData() {
   })
   .then(res => res.json())
   .then(() => {
-    alert("✅ เช็คชื่อสำเร็จ!");
+    status.innerHTML = "✅ เช็คชื่อสำเร็จ!";
+    status.className = "status success";
   })
   .catch(() => {
-    alert("❌ เกิดข้อผิดพลาด");
+    status.innerHTML = "❌ เกิดข้อผิดพลาด";
+    status.className = "status error";
   });
 }
 </script>
