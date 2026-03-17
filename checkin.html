@@ -28,7 +28,11 @@ input, button {
   border-radius:10px;
   border:none;
 }
-button { background:white; color:#2575fc; }
+button {
+  background:white;
+  color:#2575fc;
+  font-weight:bold;
+}
 </style>
 </head>
 
@@ -48,16 +52,18 @@ button { background:white; color:#2575fc; }
 </div>
 
 <script>
+const API_URL = "https://script.google.com/macros/s/AKfycby5XfG_2yi9Vs_j73SdmKPJsU0WV-YxuHREoYlH8aj0fGnCJrZeoTj1n6VZjSrOor62yw/exec";
+
 function sendData(){
-  let studentId = document.getElementById("studentId").value;
-  let name = document.getElementById("name").value;
+  let studentId = document.getElementById("studentId").value.trim();
+  let name = document.getElementById("name").value.trim();
 
   if(!studentId || !name){
-    document.getElementById("msg").innerText="❌ กรอกให้ครบ";
+    document.getElementById("msg").innerText = "❌ กรอกให้ครบ";
     return;
   }
 
-  fetch("https://script.google.com/macros/s/AKfycbwi1TNFzkm2DwTsAwOUIivv9mvqEDUO0ctxckgfmjw3uJWhuLYhVXn62VwLXvm_AgBH2A/exec", {
+  fetch(API_URL, {
     method: "POST",
     body: new URLSearchParams({
       studentId: studentId,
@@ -66,10 +72,10 @@ function sendData(){
   })
   .then(res => res.text())
   .then(() => {
-    document.getElementById("msg").innerText="✅ เช็คชื่อสำเร็จ";
+    document.getElementById("msg").innerText = "✅ เช็คชื่อสำเร็จ";
   })
   .catch(() => {
-    document.getElementById("msg").innerText="❌ Error";
+    document.getElementById("msg").innerText = "❌ Error";
   });
 }
 </script>
